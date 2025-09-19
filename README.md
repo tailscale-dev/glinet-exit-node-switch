@@ -20,7 +20,7 @@ A script modified by Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to
   curl -so /etc/rc.button/switch https://raw.githubusercontent.com/tailscale-dev/glinet-exit-node-switch/refs/heads/main/switch
   ```
 
-6. Set your exit node IPv4 address. Replacing `A.B.C.D` with our exit nodes Tailscale IP Address.
+6. Set your exit node IPv4 address. Replacing `A.B.C.D` with your exit node's Tailscale IP Address.
 
   ```bash
   sed -i 's/100.XXX.YYY.ZZZ/A.B.C.D/' /etc/rc.button/switch
