@@ -44,29 +44,9 @@ tap_s2s_disabled=$(uci -q get network.ovpnclient.disabled)
 if [ "$action" = "on" ]; then
     logger -t "gl-switch" "Set Exit node"
     /usr/sbin/tailscale set --exit-node=100.XXX.YYY.ZZZ
-#   if [ "$func" = "wireguard" ]; then
-#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning WG ON" "wireguard"
-#   elif [ "$func" = "openvpn" ]; then
-#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning OVPN ON" "openvpn"
-#   elif [ "$func" = "tor" ]; then
-#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning TOR ON"
-#   elif [ "$func" = "adguardhome" ]; then
-#     [ "$conflict" = "1" ] && exit 0
-#   elif [ "$func" = "vpn" ]; then
-#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning VPN ON"
-#   fi
 elif [ "$action" = "off" ]; then
     logger -t "gl-switch" "Turn off Exit node"
     /usr/sbin/tailscale set --exit-node=
-#   if [ "$func" = "wireguard" ]; then
-#     mcu_send_message "Turning WG OFF" "wireguard"
-#   elif [ "$func" = "openvpn" ]; then
-#     mcu_send_message "Turning OVPN OFF" "openvpn"
-#   elif [ "$func" = "tor" ]; then
-#     mcu_send_message "Turning TOR OFF"
-#   elif [ "$func" = "vpn" ]; then
-#     mcu_send_message "Turning VPN OFF"
-#   fi
 fi
 
 flock /var/lock/gl-switch.lock "/etc/gl-switch.d/$func.sh" $action &
