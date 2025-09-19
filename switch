@@ -39,9 +39,11 @@ tap_s2s_disabled=$(uci -q get network.ovpnclient.disabled)
 [ $(uci -q get mptun.global.enable) = "1" ] && conflict=1
 [ "$work_mode" != "router" ] && conflict=1
 
+# ADD YOUR EXIT NODE IP ADDRESS BELOW (--exit-node=HERE)
+
 if [ "$action" = "on" ]; then
     logger -t "gl-switch" "Set Exit node"
-    /usr/sbin/tailscale set --exit-node=100.93.124.43
+    /usr/sbin/tailscale set --exit-node=100.XXX.YYY.ZZZ
 #   if [ "$func" = "wireguard" ]; then
 #     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning WG ON" "wireguard"
 #   elif [ "$func" = "openvpn" ]; then
