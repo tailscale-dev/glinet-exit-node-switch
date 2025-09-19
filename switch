@@ -1,0 +1,70 @@
+#!/bin/sh
+. /lib/functions/gl_util.sh
+
+logger -t "gl-switch" "$BUTTON ${ACTION}"
+
+action=off
+
+[ "$ACTION" = "pressed" ] && action=on
+
+[ -e /proc/gl-hw-info/screen -a -z "$SERVICE" ] && {
+    /usr/bin/screen_disp_switch $action
+}
+
+func=$(uci -q get switch-button.@main[0].func) || {
+    logger -t "gl-switch" "no config"
+    exit 0
+}
+
+sub_func=$(uci -q get switch-button.@main[0].sub_func)
+work_mode=$(uci -q get glconfig.general.mode)
+
+[ "$work_mode" != "router" ] && {
+    [ "$func" = "cellular" ] || [ "$func" = "repeater" ] || [ "$sub_func" = "guest_wifi" ] && {
+        logger -t "gl-switch" "system is not working on router mode, $func $sub_func can't be exec"
+        exit 0
+    }
+}
+
+client_tap=$(uci -q get ovpnclient.$(uci -q get network.ovpnclient.config).mode)
+tap_s2s_disabled=$(uci -q get network.ovpnclient.disabled)
+[ "$client_tap" = tap-s2s -o "$client_tap" = tap ] && [ "$tap_s2s_disabled" = "0" ] && echo "taps2senable,exit" >> /tmp/fzk && exit 0
+
+[ -x /etc/gl-switch.d/$func.sh ] || {
+    logger -t "gl-switch" "/etc/gl-switch.d/$func.sh can't be exec"
+    exit 0
+}
+
+[ $(ubus call repeater status | jsonfilter -e "@.portal") = true ] && conflict=1
+[ $(uci -q get mptun.global.enable) = "1" ] && conflict=1
+[ "$work_mode" != "router" ] && conflict=1
+
+if [ "$action" = "on" ]; then
+    logger -t "gl-switch" "Set Exit node"
+    /usr/sbin/tailscale set --exit-node=100.93.124.43
+#   if [ "$func" = "wireguard" ]; then
+#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning WG ON" "wireguard"
+#   elif [ "$func" = "openvpn" ]; then
+#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning OVPN ON" "openvpn"
+#   elif [ "$func" = "tor" ]; then
+#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning TOR ON"
+#   elif [ "$func" = "adguardhome" ]; then
+#     [ "$conflict" = "1" ] && exit 0
+#   elif [ "$func" = "vpn" ]; then
+#     [ "$conflict" = "1" ] && exit 0 || mcu_send_message "Turning VPN ON"
+#   fi
+elif [ "$action" = "off" ]; then
+    logger -t "gl-switch" "Turn off Exit node"
+    /usr/sbin/tailscale set --exit-node=
+#   if [ "$func" = "wireguard" ]; then
+#     mcu_send_message "Turning WG OFF" "wireguard"
+#   elif [ "$func" = "openvpn" ]; then
+#     mcu_send_message "Turning OVPN OFF" "openvpn"
+#   elif [ "$func" = "tor" ]; then
+#     mcu_send_message "Turning TOR OFF"
+#   elif [ "$func" = "vpn" ]; then
+#     mcu_send_message "Turning VPN OFF"
+#   fi
+fi
+
+flock /var/lock/gl-switch.lock "/etc/gl-switch.d/$func.sh" $action &
