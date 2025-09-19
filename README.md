@@ -5,7 +5,7 @@ A script from Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to toggle
 1. Ensure you have an [exit node](https://tailscale.com/kb/1103/exit-nodes) set up in your tailnet
 2. Ensure the exit node is accessible in your router's Tailscale settings (Settings > Applications > Tailscale > Custom Exit Node, enable, refresh, and note and copy IP address you've chosen)
 3. [SSH into your router](https://docs.gl-inet.com/router/en/3/tutorials/ssh/) (user is `root`, password is the admin password you set)
-4. Navigate to `/etc/rc.button/switch` (`cd /etc/rc.button/switch`)
+4. Navigate to `/etc/rc.button` (`cd /etc/rc.button`)
 5. Edit the `switch` script with Vim (`vim /etc/rc.button/switch`) to match the modified script switch here, or replace the script entirely, depending on your vim/ssh comfort.
 6. Be sure to add your exit node IPv4 address near line 46 (`/usr/sbin/tailscale set --exit-node=100.XXX.YYY.ZZZ`)
 7. You may need to reboot your router for the switch to start working; alternately, try enabling and disabling the exit node in router settings.
