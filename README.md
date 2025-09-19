@@ -1,5 +1,5 @@
 # glinet-exit-node-switch
-A script from Mike O'Driscoll [@mikeodr](https://github.com/mikeodr) to toggle Tailscale exit nodes from a GL.iNet physical switch. This is known to work on the GL.iNet Beryl AX (MT-3000); it likely works with most others, but cannot be guaranteed. Back up your settings, use caution, and all that good stuff.
+A script from Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to toggle Tailscale exit nodes from a GL.iNet physical switch. This is known to work on the GL.iNet Beryl AX (MT-3000); it likely works with most others, but cannot be guaranteed. Back up your settings, use caution, and all that good stuff.
 
 ## Use:
 1. Ensure you have an [exit node](https://tailscale.com/kb/1103/exit-nodes) set up in your tailnet
