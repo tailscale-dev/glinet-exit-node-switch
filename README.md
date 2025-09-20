@@ -4,11 +4,13 @@ A script modified by Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to
 
 ## Use
 
-1. Ensure you have an [exit node](https://tailscale.com/kb/1103/exit-nodes) set up in your tailnet
-2. Ensure the exit node is accessible in your router's Tailscale settings (Settings > Applications > Tailscale > Custom Exit Node, enable, refresh, and note and copy IP address you've chosen)
-3. [SSH into your router](https://docs.gl-inet.com/router/en/3/tutorials/ssh/) (user is `root`, password is the admin password you set)
+1. Ensure your Beryl AX (or other GL.iNet router) is [connected to Tailscale](https://docs.gl-inet.com/router/en/4/interface_guide/tailscale/)
+2. Set up the router to [offer subnets](https://docs.gl-inet.com/router/en/4/interface_guide/tailscale/#allow-remote-access-lan)
+3. Have an [exit node](https://tailscale.com/kb/1103/exit-nodes) set up in your tailnet
+4. Ensure the exit node is accessible in your router's Tailscale settings (Settings > Applications > Tailscale > Custom Exit Node, enable, refresh, and note and copy IP address you've chosen)
+5. [SSH into your router](https://docs.gl-inet.com/router/en/3/tutorials/ssh/) (user is `root`, password is the admin password you set)
 
-4. Back up the current value in case something goes wrong
+6. Back up the current value in case something goes wrong
 
   ```bash
   cp /etc/rc.button/switch /root/switch.bak
