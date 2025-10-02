@@ -1,6 +1,8 @@
 # glinet-exit-node-switch
 
-A script modified by Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to toggle Tailscale exit nodes from a GL.iNet physical switch. This is known to work on the GL.iNet Beryl AX (MT-3000); it likely works with most other GL.iNet routers, but cannot be guaranteed. Back up your settings, use caution, and all that good stuff.
+A script modified by Mike O'Driscoll ([@mikeodr](https://github.com/mikeodr)) to toggle Tailscale exit nodes from a GL.iNet physical switch. Included as part of the blog post: [Upgrade your travel kit with a tiny, Tailscale-friendly router](https://tailscale.com/blog/tailscale-glinet-travel-router-mt3000-beryl-ax).
+
+This is known to work on the GL.iNet Beryl AX (MT-3000); it likely works with most other GL.iNet routers, but cannot be guaranteed. Back up your settings, use caution, and all that good stuff.
 
 ## Use
 
