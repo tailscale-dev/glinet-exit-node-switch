@@ -11,6 +11,16 @@ action=off
     /usr/bin/screen_disp_switch $action
 }
 
+# ADD YOUR EXIT NODE IP ADDRESS BELOW (--exit-node=HERE)
+
+if [ "$action" = "on" ]; then
+    logger -t "gl-switch" "Set Exit node"
+    /usr/sbin/tailscale set --exit-node=100.XXX.YYY.ZZZ
+elif [ "$action" = "off" ]; then
+    logger -t "gl-switch" "Turn off Exit node"
+    /usr/sbin/tailscale set --exit-node=
+fi
+
 func=$(uci -q get switch-button.@main[0].func) || {
     logger -t "gl-switch" "no config"
     exit 0
@@ -38,15 +48,5 @@ tap_s2s_disabled=$(uci -q get network.ovpnclient.disabled)
 [ $(ubus call repeater status | jsonfilter -e "@.portal") = true ] && conflict=1
 [ $(uci -q get mptun.global.enable) = "1" ] && conflict=1
 [ "$work_mode" != "router" ] && conflict=1
-
-# ADD YOUR EXIT NODE IP ADDRESS BELOW (--exit-node=HERE)
-
-if [ "$action" = "on" ]; then
-    logger -t "gl-switch" "Set Exit node"
-    /usr/sbin/tailscale set --exit-node=100.XXX.YYY.ZZZ
-elif [ "$action" = "off" ]; then
-    logger -t "gl-switch" "Turn off Exit node"
-    /usr/sbin/tailscale set --exit-node=
-fi
 
 flock /var/lock/gl-switch.lock "/etc/gl-switch.d/$func.sh" $action &
